@@ -1,0 +1,27 @@
+#!/bin/sh
+# kim-dkms postinst: register the source with DKMS and build/install the
+# module for the running kernel (DKMS signs it with the MOK key on Ubuntu).
+set -e
+NAME=kim
+VERSION=@VERSION@
+
+case "$1" in
+configure)
+	dkms add -m "$NAME" -v "$VERSION" >/dev/null 2>&1 || true
+	k=$(uname -r)
+	if [ -d "/lib/modules/$k/build" ]; then
+		if dkms build -m "$NAME" -v "$VERSION" -k "$k" && dkms install -m "$NAME" -v "$VERSION" -k "$k" --force; then
+			echo "kim: kernel_extractor built and installed for $k"
+		else
+			echo "kim: DKMS build failed for $k (see /var/lib/dkms/$NAME/$VERSION/build/make.log)" >&2
+		fi
+	else
+		echo "kim: no headers for $k (install linux-headers-$k); DKMS will build on the next kernel" >&2
+	fi
+	if command -v mokutil >/dev/null 2>&1 && mokutil --sb-state 2>/dev/null | grep -q enabled; then
+		echo "kim: Secure Boot is on: the module is signed with /var/lib/shim-signed/mok/MOK.der;"
+		echo "kim: if that key is not enrolled yet: sudo mokutil --import /var/lib/shim-signed/mok/MOK.der, reboot, enroll"
+	fi
+	;;
+esac
+exit 0

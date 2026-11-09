@@ -1,0 +1,58 @@
+#!/bin/sh
+# preinst for kim-dkms and kim-daemon: refuse unsupported systems before
+# anything is unpacked. Supported: Ubuntu 26.04 LTS on Intel Core 12th gen
+# (Alder Lake) or newer (same model list as kim_cpu.c).
+# KIM_ALLOW_UNSUPPORTED=1 skips the OS and CPU-model checks, never the
+# instruction check (the binaries use AVX2/VAES/VPCLMULQDQ unconditionally).
+set -e
+
+case "$1" in
+install|upgrade) ;;
+*) exit 0 ;;
+esac
+
+fail() {
+	echo "kim: $1" >&2
+	if [ "$2" = soft ] && [ "${KIM_ALLOW_UNSUPPORTED:-0}" = 1 ]; then
+		echo "kim: KIM_ALLOW_UNSUPPORTED=1: installing anyway (untested)" >&2
+		return 0
+	fi
+	[ "$2" = soft ] && echo "kim: set KIM_ALLOW_UNSUPPORTED=1 to install anyway (untested)" >&2
+	exit 1
+}
+
+# ---- OS
+. /etc/os-release 2>/dev/null || true
+if [ "${ID:-}" != ubuntu ] || [ "${VERSION_ID:-}" != 26.04 ]; then
+	fail "this package supports Ubuntu 26.04 LTS only (found: ${PRETTY_NAME:-unknown})" soft
+fi
+
+# ---- CPU (first processor; hybrid parts report one family/model)
+vendor=$(sed -n 's/^vendor_id[[:space:]]*: //p' /proc/cpuinfo | head -1)
+family=$(sed -n 's/^cpu family[[:space:]]*: //p' /proc/cpuinfo | head -1)
+model=$(sed -n 's/^model[[:space:]]*: //p' /proc/cpuinfo | head -1)
+flags=" $(sed -n 's/^flags[[:space:]]*: //p' /proc/cpuinfo | head -1) "
+name=$(sed -n 's/^model name[[:space:]]*: //p' /proc/cpuinfo | head -1)
+
+for f in avx2 vaes vpclmulqdq aes pclmulqdq; do
+	case "$flags" in
+	*" $f "*) ;;
+	*) fail "this CPU ($name) lacks $f, which kim uses unconditionally" hard ;;
+	esac
+done
+
+ok=0
+if [ "$vendor" = GenuineIntel ]; then
+	if [ "$family" = 18 ]; then
+		ok=1                    # Nova Lake and later client cores
+	elif [ "$family" = 6 ]; then
+		# Alder Lake 0x97 0x9a, -N 0xbe; Raptor Lake 0xb7 0xba 0xbf; Meteor Lake 0xac 0xaa;
+		# Arrow Lake 0xc5 0xc6 0xb5; Lunar Lake 0xbd; Panther Lake 0xcc; Wildcat Lake 0xd5
+		case "$model" in
+		151|154|190|183|186|191|172|170|197|198|181|189|204|213) ok=1 ;;
+		esac
+	fi
+fi
+[ "$ok" = 1 ] || fail "kim targets Intel Core 12th gen (Alder Lake) and newer; found $name ($vendor family $family model $model)" soft
+
+exit 0

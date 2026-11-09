@@ -1,0 +1,118 @@
+== direct_bench Sat Nov  7 08:38:51 AM IST 2026 | kernel 7.0.0-42-generic | 3 x 10s per config
+signed /home/shikhar-shashank/Locked_Kernel/File_Extractor/files/kernel_extractor.ko
+
+== Module 1 tests (direct_text=1)
+T1 header / geometry / alignment
+  [PASS] magic + ABI version
+  [PASS] ring geometry 1024 x 16384 B
+  [PASS] descriptors 64B sized and aligned
+  [PASS] payload slots 16 KiB aligned
+  [PASS] frames tile 16-32 KiB (E) and 64-256 KiB (P) chunks
+  [PASS] head/tail invariant
+  [PASS] text bounds resolved
+  [PASS] KASLR slide page aligned (slide=0x10e00000)
+  [PASS] text window mapped, covers [_stext,_etext) page-rounded (23.3 MiB)
+T2 mmap / open hardening
+  [PASS] writable ring mapping refused
+  [PASS] wrong-length mapping refused
+  [PASS] MAP_PRIVATE refused
+  [PASS] writable text window refused
+  [PASS] executable text window refused
+  [PASS] wrong-length text window refused
+  [PASS] mprotect cannot make the text window writable or executable
+  [PASS] second opener gets EBUSY (SPSC preserved)
+T3 one full scan epoch
+  [PASS] epoch completed (2810 frames, 40.6 MiB, 378 module segments)
+  [PASS] per-segment frame continuity (bad=0)
+  [PASS] no unreadable pages (fault frames=0, fault_pages=0)
+  [PASS] no writable PTEs inside kernel text (W^X)
+  [PASS] .text bytes == _etext-_stext (24478448)
+  [PASS] kernel saw no invalid tail values
+T4 mapped addresses vs /proc/kallsyms
+  [PASS] _stext matches
+  [PASS] _etext matches
+  [PASS] sys_call_table matches
+T5/T6 sys_call_table integrity
+  [PASS] 472/472 syscall entries inside kernel text (hooked entries: 0)
+  [PASS] ring payload == live memory via /proc/kcore (3776 bytes)
+T7 direct kernel text (no copy)
+  [PASS] every kernel text frame DIRECT, nothing else (1495/1495)
+  [PASS] no text page moved since load (REMAP frames 0)
+  [PASS] text window == live memory via /proc/kcore (5/5 sampled frames)
+
+Benchmarks
+  producer     chunk=128 KiB :  15.10 GB/s (43214 MiB in 3.00s)
+  ingest+AVX2 chunk= 32 KiB :  11.98 GB/s (34288 MiB in 3.00s) | frame age p50 590.1 us p99 1313.3 us max 3126.5 us (saturated ring) [x=1e]
+  ingest+AVX2 chunk=128 KiB :  11.88 GB/s (34002 MiB in 3.00s) | frame age p50 396.2 us p99 1211.1 us max 2358.5 us (saturated ring) [x=49]
+  ingest+AVX2 chunk=256 KiB :  12.15 GB/s (34757 MiB in 3.00s) | frame age p50 356.0 us p99 1205.0 us max 2258.2 us (saturated ring) [x=91]
+  kick -> first frame : p50 73.1 us  p99 130.8 us  max 266.9 us (n=100)
+
+31 passed, 0 failed, 0 skipped | ring_full_events=6747 | direct_frames=5549440 remap_frames=0
+
+== A/B runs (scan_interval_ms=0, fixed key, no baseline)
+   1 direct             rep 1: 11.9458 GB/s 15.66 W 0.76288 GB/J digest f6f47378f9580113 direct 4202916 remap 0
+   2 copy               rep 1: 6.6600 GB/s 14.12 W 0.47153 GB/J digest f6f47378f9580113 direct 0 remap 0
+   3 direct-hybrid-0.8  rep 1: 11.8598 GB/s 16.92 W 0.70096 GB/J digest f6f47378f9580113 direct 4168531 remap 0
+   4 direct-E-only      rep 1: 11.1773 GB/s 15.50 W 0.72114 GB/J digest f6f47378f9580113 direct 3929331 remap 0
+   5 direct             rep 2: 11.9790 GB/s 15.56 W 0.76969 GB/J digest f6f47378f9580113 direct 4210391 remap 0
+   6 direct-hybrid-0.8  rep 2: 11.8325 GB/s 16.73 W 0.70741 GB/J digest f6f47378f9580113 direct 4159561 remap 0
+   7 direct-E-only      rep 2: 11.1206 GB/s 15.44 W 0.72033 GB/J digest f6f47378f9580113 direct 3912886 remap 0
+   8 copy               rep 2: 6.7100 GB/s 14.08 W 0.47643 GB/J digest f6f47378f9580113 direct 0 remap 0
+   9 direct             rep 3: 11.9598 GB/s 15.45 W 0.77433 GB/J digest f6f47378f9580113 direct 4208896 remap 0
+  10 direct-hybrid-0.8  rep 3: 11.8464 GB/s 16.74 W 0.70768 GB/J digest f6f47378f9580113 direct 4164046 remap 0
+  11 direct-E-only      rep 3: 11.0524 GB/s 15.74 W 0.70232 GB/J digest f6f47378f9580113 direct 3887471 remap 0
+  12 copy               rep 3: 6.6239 GB/s 14.10 W 0.46962 GB/J digest f6f47378f9580113 direct 0 remap 0
+
+== summary (mean over reps)
+config                     GB/s      W          GB/J  vs copy
+copy                 6.66 ± 0.04   14.1 0.473 ± 0.004  +0% GB/s, +0% GB/J
+direct              11.96 ± 0.02   15.6 0.769 ± 0.006  +79% GB/s, +63% GB/J
+direct-E-only       11.12 ± 0.06   15.6 0.715 ± 0.011  +67% GB/s, +51% GB/J
+direct-hybrid-0.8   11.85 ± 0.01   16.8 0.705 ± 0.004  +78% GB/s, +49% GB/J
+digests: 1 distinct ['f6f47378f9580113'] -> IDENTICAL (bit-exact)
+remap frames total: 0; direct frames in copy runs: 0
+
+== live_check.sh on the direct path (module default direct_text=1)
+=== baseline learned; quiet period
+=== 1a static key: sched_schedstats=1
+=== 1b static key: sched_schedstats=0 (restored)
+=== 2a modprobe dummy
+=== 2b modprobe -r dummy
+=== 3a ftrace: function tracer on vfs_read
+=== 3b ftrace: tracer off
+=== done
+
+---- event counts per step ----
+      1     LEARNED baseline of 
+=== baseline learned; quiet period
+=== 1a static key: sched_schedstats=1
+     23     CHANGED ktext ktext patch-like
+=== 1b static key: sched_schedstats=0 (restored)
+     23     REVERTED ktext ktext 
+=== 2a modprobe dummy
+      1     NEW_SEGMENT mod_text dummy 
+      1     NEW_SEGMENT mod_rodata dummy 
+=== 2b modprobe -r dummy
+      1     VANISHED mod_text dummy 
+      1     VANISHED mod_rodata dummy 
+=== 3a ftrace: function tracer on vfs_read
+      6     CHANGED ktext ktext patch-like
+=== 3b ftrace: tracer off
+      6     REVERTED ktext ktext 
+      7     CHANGED ktext ktext patch-like
+      7     REVERTED ktext ktext 
+=== done
+
+baseline: checking | 3 learned + 84 checked epochs | 380 segments, 2810 frames, 0 in CHANGED | events: changed 36, transient 0, reverted 36, new 2, vanished 2, wx 0, fault 0, remap 0, unstable 0 | 365723 symbols
+enforcer: events info 37 notice 36 warn 4 crit 0 emerg 0 | suppressed 50 | actions done 0, would 0, failed 0, not-enabled 0
+
+---- Module 4 (dry-run) ----
+action records (expected 0 for legitimate changes): 0
+[KE warn  ] kim_summary period_s=23 events=77 info=37 notice=36 warn=4 crit=0 emerg=0 suppressed=50 changed=36 reverted=36 transient=0 new=2 vanished=2
+full log with byte-level explanations: /home/shikhar-shashank/Locked_Kernel/File_Extractor/files/module3_verifier/live_check.log
+
+== kernel log since start
+  clean (14 new lines)
+  module loads seen: 14 (expected 14)
+  [52337.519827] kernel_extractor: ready: 378 segments, device /dev/kernel_integrity_buf, direct text on (no addresses logged)
+full log: /home/shikhar-shashank/Locked_Kernel/File_Extractor/files/direct_bench.log   per-run CSV: /home/shikhar-shashank/Locked_Kernel/File_Extractor/files/direct_bench.csv

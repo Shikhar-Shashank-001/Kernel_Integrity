@@ -1,0 +1,35 @@
+kim - kernel integrity monitor (version @VERSION@)
+=================================================
+
+Continuously verifies the running kernel: kernel text, the syscall tables and
+the text/rodata of every loaded module are tagged (AES-256-GCM-SIV, VAES) on
+the P-cores of a hybrid Intel CPU and compared with a baseline learned at
+start-up. Legitimate runtime patching (static keys, ftrace) is decoded and
+reported as low severity; unexplained code changes, writable kernel text and
+syscall-table changes are critical.
+
+Supported: Ubuntu 26.04 LTS, Intel Core 12th gen (Alder Lake) and newer.
+
+Packages
+  kim-dkms    kernel_extractor module source, built by DKMS for every kernel
+  kim-daemon  /usr/sbin/kimd, kim.service, /etc/kim/kimd.conf
+
+Secure Boot
+  DKMS signs the module with /var/lib/shim-signed/mok/MOK.priv/.der. If that
+  key is not enrolled: sudo mokutil --import /var/lib/shim-signed/mok/MOK.der,
+  reboot, choose "Enroll MOK". To use a key you already enrolled, copy it there
+  (MOK.priv mode 0600, root) before installing kim-dkms.
+
+Use
+  systemctl status kim            running? baseline learned?
+  journalctl -u kim -f            events as they happen
+  ausearch -m TRUSTED_APP -ts today   audit records (warn and above)
+  /etc/kim/kimd.conf              options; monitor-only by default
+
+Enforcement (-e in KIMD_OPTS) raises lockdown to "confidentiality" and sets
+kernel.modules_disabled=1 on a critical event. Both are one-way until reboot.
+Test it in a VM first.
+
+Performance (i5-12450H, back-to-back scans, 2026-11): ~13 GB/s on battery,
+~15.6 GB/s on AC. At the default one scan per second a scan of ~41 MiB takes
+about 3 ms (the pipeline is busy <1% of the time).

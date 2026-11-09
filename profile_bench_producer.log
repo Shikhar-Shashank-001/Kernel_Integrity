@@ -1,0 +1,44 @@
+== profile_bench SET=producer Sun Nov  8 01:57:38 PM IST 2026 | kernel 7.0.0-42-generic | battery | 3 x 8s per config
+   1 3P-kcore       rep 1: gbps=12.2898 power=battery
+   2 r512           rep 1: gbps=11.5172 power=battery
+   3 bo20           rep 1: gbps=11.8799 power=battery
+   4 r4096          rep 1: gbps=11.2493 power=battery
+   5 r256           rep 1: gbps=9.3827 power=battery
+   6 r2048-bo20-fc  rep 1: gbps=11.2364 power=battery
+   7 fastcopy       rep 1: gbps=11.3982 power=battery
+   8 r2048          rep 1: gbps=11.4861 power=battery
+   9 base           rep 1: gbps=11.6686 power=battery
+  10 fastcopy       rep 2: gbps=11.2704 power=battery
+  11 r512           rep 2: gbps=11.0946 power=battery
+  12 3P-kcore       rep 2: gbps=12.5650 power=battery
+  13 r4096          rep 2: gbps=11.1829 power=battery
+  14 r256           rep 2: gbps=8.9036 power=battery
+  15 r2048-bo20-fc  rep 2: gbps=11.0926 power=battery
+  16 bo20           rep 2: gbps=11.8228 power=battery
+  17 base           rep 2: gbps=11.8740 power=battery
+  18 r2048          rep 2: gbps=11.6227 power=battery
+  19 r512           rep 3: gbps=11.4339 power=battery
+  20 bo20           rep 3: gbps=11.8384 power=battery
+  21 3P-kcore       rep 3: gbps=12.6590 power=battery
+  22 fastcopy       rep 3: gbps=11.5187 power=battery
+  23 r2048          rep 3: gbps=11.3298 power=battery
+  24 base           rep 3: gbps=11.8116 power=battery
+  25 r2048-bo20-fc  rep 3: gbps=11.2822 power=battery
+  26 r4096          rep 3: gbps=11.1564 power=battery
+  27 r256           rep 3: gbps=9.3672 power=battery
+
+== summary (mean over reps; cv = run-to-run spread of GB/s)
+config           GB/s   cv     W   GB/J | kthread cpu sleep full/s | copy  GB/s direct | rd: kern P busy | ran on (last rep)
+base            11.78   1%  15.5  0.760 |         99%    0%     18 |  87%   5.7    12% |      40%    42% | cpu1(P) 81% cpu3(P) 18% cpu5(P) 1%
+fastcopy        11.40   1%  15.2  0.749 |         99%    1%     28 |  87%   5.6    12% |      18%    47% | cpu1(P) 100%
+r256             9.22   3%  13.0  0.709 |         68%   32%   1136 |  60%   6.5     7% |      52%    32% | cpu1(P) 98% cpu3(P) 2%
+r512            11.35   2%  14.8  0.765 |         86%   14%    510 |  75%   6.5    10% |      43%    40% | cpu1(P) 98% cpu3(P) 2%
+r2048           11.48   1%  15.6  0.738 |         99%    1%     17 |  88%   5.5    11% |      39%    42% | cpu3(P) 68% cpu1(P) 28% cpu2(P) 2% cpu5(P) 2%
+r4096           11.20   0%  15.6  0.717 |        100%    0%      3 |  89%   5.4    11% |      38%    42% | cpu1(P) 100%
+bo20            11.85   0%  15.5  0.764 |        100%    0%     51 |  88%   5.7    12% |      40%    43% | cpu5(P) 96% cpu1(P) 2% cpu8(E) 1%
+r2048-bo20-fc   11.20   1%  15.5  0.724 |        100%    0%     70 |  88%   5.4    12% |      18%    47% | cpu5(P) 55% cpu1(P) 44% cpu9(E) 1%
+3P-kcore        12.50   2%  16.1  0.778 |         90%   10%    349 |  82%   6.5     7% |      28%    55% | cpu6(P) 100%
+
+(first row = reference; copy/direct = share of wall time the kernel thread spent emitting copied / direct frames)
+
+per-run logs: /home/shikhar-shashank/Locked_Kernel/File_Extractor/files/profile_runs_producer/   summary: /home/shikhar-shashank/Locked_Kernel/File_Extractor/files/profile_bench_producer.log

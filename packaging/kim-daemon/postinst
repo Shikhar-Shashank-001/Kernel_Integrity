@@ -1,0 +1,17 @@
+#!/bin/sh
+set -e
+case "$1" in
+configure)
+	if [ -d /run/systemd/system ]; then
+		systemctl daemon-reload
+		systemctl enable kim.service >/dev/null 2>&1 || true
+		if systemctl restart kim.service; then
+			echo "kim: monitoring started (monitor-only). Status: systemctl status kim; events: journalctl -u kim"
+		else
+			echo "kim: service did not start; usually the module is not built/signed/enrolled yet." >&2
+			echo "kim: check: journalctl -u kim -b; then: sudo systemctl start kim" >&2
+		fi
+	fi
+	;;
+esac
+exit 0

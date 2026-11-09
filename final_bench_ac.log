@@ -1,0 +1,38 @@
+== final_bench Mon Nov  9 03:15:17 PM IST 2026 | kernel 7.0.0-42-generic | ac | 12th Gen Intel(R) Core(TM) i5-12450H | 5 x 10s
+   1 3-own-core      rep 1: 16.6573 GB/s  36.51 W 0.45627 GB/J digest 2b2a85bc9f20da65
+   2 1-copy          rep 1: 8.7318 GB/s  32.25 W 0.27074 GB/J digest 2b2a85bc9f20da65
+   3 4-final         rep 1: 17.4455 GB/s  37.91 W 0.46016 GB/J digest 2b2a85bc9f20da65
+   4 2-direct        rep 1: 15.6361 GB/s  35.62 W 0.43894 GB/J digest 2b2a85bc9f20da65
+   5 5-final-verify  rep 1: 17.2867 GB/s  37.99 W 0.45505 GB/J digest 2b2a85bc9f20da65
+   6 4-final         rep 2: 16.7080 GB/s  39.64 W 0.42145 GB/J digest 2b2a85bc9f20da65
+   7 2-direct        rep 2: 15.0475 GB/s  37.42 W 0.40213 GB/J digest 2b2a85bc9f20da65
+   8 3-own-core      rep 2: 16.3577 GB/s  38.03 W 0.43018 GB/J digest 2b2a85bc9f20da65
+   9 1-copy          rep 2: 8.0790 GB/s  35.70 W 0.22627 GB/J digest 2b2a85bc9f20da65
+  10 5-final-verify  rep 2: 17.1358 GB/s  38.24 W 0.44810 GB/J digest 2b2a85bc9f20da65
+  11 2-direct        rep 3: 15.0649 GB/s  36.43 W 0.41352 GB/J digest 2b2a85bc9f20da65
+  12 4-final         rep 3: 16.5580 GB/s  39.90 W 0.41497 GB/J digest 2b2a85bc9f20da65
+  13 5-final-verify  rep 3: 17.2433 GB/s  38.50 W 0.44793 GB/J digest 2b2a85bc9f20da65
+  14 1-copy          rep 3: 8.7689 GB/s  32.65 W 0.26861 GB/J digest 2b2a85bc9f20da65
+  15 3-own-core      rep 3: 16.7216 GB/s  37.49 W 0.44600 GB/J digest 2b2a85bc9f20da65
+  16 4-final         rep 4: 17.4067 GB/s  38.49 W 0.45219 GB/J digest 2b2a85bc9f20da65
+  17 5-final-verify  rep 4: 17.2382 GB/s  38.49 W 0.44787 GB/J digest 2b2a85bc9f20da65
+  18 2-direct        rep 4: 15.3355 GB/s  35.93 W 0.42679 GB/J digest 2b2a85bc9f20da65
+  19 3-own-core      rep 4: 16.6817 GB/s  37.31 W 0.44714 GB/J digest 2b2a85bc9f20da65
+  20 1-copy          rep 4: 8.9504 GB/s  32.79 W 0.27293 GB/J digest 2b2a85bc9f20da65
+  21 4-final         rep 5: 17.3854 GB/s  38.39 W 0.45281 GB/J digest 2b2a85bc9f20da65
+  22 2-direct        rep 5: 15.5337 GB/s  36.31 W 0.42782 GB/J digest 2b2a85bc9f20da65
+  23 1-copy          rep 5: 8.9493 GB/s  32.84 W 0.27254 GB/J digest 2b2a85bc9f20da65
+  24 5-final-verify  rep 5: 17.0731 GB/s  38.46 W 0.44391 GB/J digest 2b2a85bc9f20da65
+  25 3-own-core      rep 5: 16.2139 GB/s  37.24 W 0.43544 GB/J digest 2b2a85bc9f20da65
+
+== summary (mean ± sd over reps; gain vs 1-copy)
+stage                    GB/s     W          GB/J |           vs copy | kthread: copy direct asleep
+1-copy            8.70 ± 0.36  33.2 0.262 ± 0.020 |    +0%    +0% GB/J |    99%     0%     0%
+2-direct         15.32 ± 0.27  36.3 0.422 ± 0.014 |   +76%   +61% GB/J |    81%     9%    11%
+3-own-core       16.53 ± 0.23  37.3 0.443 ± 0.010 |   +90%   +69% GB/J |    81%     5%    13%
+4-final          17.10 ± 0.43  38.9 0.440 ± 0.021 |   +97%   +68% GB/J |    94%     5%     1%
+5-final-verify   17.20 ± 0.09  38.3 0.449 ± 0.004 |   +98%   +71% GB/J |    94%     5%     1%
+digests: 1 distinct -> IDENTICAL across all stages
+5-final-verify events per run: [1, 1, 1, 1, 1] (expect a few patch-like static-key flips, no CRIT)
+
+CSV: /home/shikhar-shashank/Locked_Kernel/File_Extractor/files/final_bench_ac.csv   per-run logs: /home/shikhar-shashank/Locked_Kernel/File_Extractor/files/final_runs_ac/

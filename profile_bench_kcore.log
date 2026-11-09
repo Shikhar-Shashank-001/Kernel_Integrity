@@ -1,0 +1,32 @@
+== profile_bench SET=kcore Sun Nov  8 02:17:11 PM IST 2026 | kernel 7.0.0-42-generic | AC | 5 x 8s per config
+   1 auto           rep 1: gbps=12.7025 power=AC
+   2 auto-r2048     rep 1: gbps=15.8998 power=AC
+   3 4P-shared      rep 1: gbps=13.8645 power=AC
+   4 auto-bo20      rep 1: gbps=15.5296 power=AC
+   5 auto-r2048     rep 2: gbps=16.0128 power=AC
+   6 auto           rep 2: gbps=14.3945 power=AC
+   7 auto-bo20      rep 2: gbps=15.3154 power=AC
+   8 4P-shared      rep 2: gbps=13.8743 power=AC
+   9 auto           rep 3: gbps=14.3786 power=AC
+  10 auto-r2048     rep 3: gbps=15.1381 power=AC
+  11 auto-bo20      rep 3: gbps=13.0096 power=AC
+  12 4P-shared      rep 3: gbps=14.1978 power=AC
+  13 4P-shared      rep 4: gbps=13.7368 power=AC
+  14 auto-r2048     rep 4: gbps=14.9101 power=AC
+  15 auto-bo20      rep 4: gbps=14.4636 power=AC
+  16 auto           rep 4: gbps=15.1370 power=AC
+  17 auto           rep 5: gbps=15.0925 power=AC
+  18 auto-r2048     rep 5: gbps=15.9202 power=AC
+  19 4P-shared      rep 5: gbps=14.1493 power=AC
+  20 auto-bo20      rep 5: gbps=15.5166 power=AC
+
+== summary (mean over reps; cv = run-to-run spread of GB/s)
+config           GB/s   cv     W   GB/J | kthread cpu sleep full/s | copy  GB/s direct | rd: kern P busy | ran on (last rep)
+4P-shared       13.96   1%  40.8  0.342 |         89%   10%    377 |  81%   7.3     8% |      41%    39% | cpu5(P) 61% cpu3(P) 20% cpu1(P) 11% cpu8(E) 2%
+auto            14.34   7%  42.6  0.337 |         87%   13%    450 |  81%   7.5     5% |      31%    52% | cpu6(P) 100%
+auto-r2048      15.58   3%  43.6  0.358 |        100%    0%     21 |  95%   7.0     4% |      25%    61% | cpu6(P) 100%
+auto-bo20       14.77   7%  43.0  0.345 |         89%   10%   1696 |  84%   7.4     4% |      30%    54% | cpu6(P) 100%
+
+(first row = reference; copy/direct = share of wall time the kernel thread spent emitting copied / direct frames)
+
+per-run logs: /home/shikhar-shashank/Locked_Kernel/File_Extractor/files/profile_runs_kcore/   summary: /home/shikhar-shashank/Locked_Kernel/File_Extractor/files/profile_bench_kcore.log

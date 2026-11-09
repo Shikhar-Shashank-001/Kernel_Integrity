@@ -1,0 +1,11 @@
+#!/bin/sh
+set -e
+case "$1" in
+remove|upgrade|deconfigure)
+	if lsmod | grep -qw kernel_extractor; then
+		modprobe -r kernel_extractor 2>/dev/null || echo "kim: kernel_extractor is in use; it stays loaded until reboot" >&2
+	fi
+	dkms remove -m kim -v @VERSION@ --all >/dev/null 2>&1 || true
+	;;
+esac
+exit 0

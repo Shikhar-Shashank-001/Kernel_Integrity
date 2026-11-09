@@ -1,0 +1,9 @@
+#!/bin/sh
+set -e
+if [ -d /run/systemd/system ]; then
+	case "$1" in
+	remove|deconfigure) systemctl disable --now kim.service >/dev/null 2>&1 || true ;;
+	upgrade) systemctl stop kim.service >/dev/null 2>&1 || true ;;
+	esac
+fi
+exit 0

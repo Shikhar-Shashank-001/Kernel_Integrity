@@ -1,0 +1,42 @@
+# ---- secrets: NEVER commit (Secure Boot signing key)
+MOK.priv
+MOK.der
+*.priv
+*.pem
+*.key
+
+# ---- kernel module build output
+*.ko
+*.ko.zst
+*.o
+*.mod
+*.mod.c
+*.cmd
+.*.cmd
+.module-common.o
+Module.symvers
+modules.order
+.tmp_versions/
+
+# ---- user-space binaries and libraries
+*.a
+/ingestion_daemon
+/test_extractor
+/module2_dispatcher/kd_daemon
+/module2_dispatcher/test_dispatcher
+/module2_dispatcher/test_dispatcher_tsan
+/module3_verifier/test_verifier
+/module3_verifier/test_baseline
+/module4_enforcer/test_enforcer
+
+# ---- packaging output (attach the .deb files to a GitHub Release instead)
+/packaging/build/
+/packaging/dist/
+
+# ---- raw per-run benchmark logs (large; CSVs, summaries and plots are kept)
+/final_runs_*/
+/profile_runs*/
+
+# ---- misc
+__pycache__/
+*.pyc

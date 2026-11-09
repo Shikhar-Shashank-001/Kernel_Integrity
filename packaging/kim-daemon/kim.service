@@ -1,0 +1,34 @@
+[Unit]
+Description=Kernel integrity monitor (kim): continuous kernel text/module verification
+Documentation=file:///usr/share/doc/kim-daemon/README
+After=systemd-modules-load.service auditd.service
+Wants=auditd.service
+# a module that cannot load (unsigned/unenrolled) must not retry forever
+StartLimitIntervalSec=300
+StartLimitBurst=5
+
+[Service]
+Type=simple
+EnvironmentFile=-/etc/kim/kimd.conf
+ExecStartPre=/usr/sbin/modprobe kernel_extractor $KIM_MODULE_OPTS
+ExecStart=/usr/sbin/kimd $KIMD_OPTS
+# unload when stopped (fails harmlessly if enforcement set kernel.modules_disabled=1)
+ExecStopPost=-/usr/sbin/modprobe -r kernel_extractor
+Restart=on-failure
+RestartSec=10
+# Hardening. Not used on purpose: ProtectKernelTunables (enforcement writes
+# kernel.modules_disabled), ProtectKernelModules (modprobe, -A unload).
+CapabilityBoundingSet=CAP_SYS_ADMIN CAP_SYS_MODULE CAP_SYS_NICE CAP_AUDIT_WRITE CAP_IPC_LOCK CAP_SYSLOG
+NoNewPrivileges=yes
+ProtectSystem=full
+ProtectHome=yes
+PrivateTmp=yes
+LockPersonality=yes
+MemoryDenyWriteExecute=yes
+RestrictRealtime=yes
+RestrictNamespaces=yes
+RestrictAddressFamilies=AF_UNIX AF_NETLINK
+SystemCallArchitectures=native
+
+[Install]
+WantedBy=multi-user.target

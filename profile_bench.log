@@ -1,0 +1,27 @@
+== profile_bench Sun Nov  8 01:34:49 PM IST 2026 | kernel 7.0.0-42-generic | AC | 2 x 8s per config
+   1 default       rep 1: gbps=15.6350
+   2 1P            rep 1: gbps=10.8388
+   3 kE-nice0      rep 1: gbps=11.7007
+   4 kE-nice0-xor  rep 1: gbps=12.1331
+   5 xor           rep 1: gbps=14.4576
+   6 2P            rep 1: gbps=13.0555
+   7 knice0        rep 1: gbps=13.3943
+   8 xor           rep 2: gbps=14.0324
+   9 kE-nice0-xor  rep 2: gbps=12.9369
+  10 default       rep 2: gbps=13.6302
+  11 1P            rep 2: gbps=9.9343
+  12 kE-nice0      rep 2: gbps=12.9786
+  13 knice0        rep 2: gbps=15.2747
+  14 2P            rep 2: gbps=14.0567
+
+== summary (mean over reps)
+config          GB/s     W | reader: wk  kern  busy | workers | kthread: cpu   rq sleep ring_full/s | ran on (last rep)
+default        14.63  39.1 |        52%   42%    6% |     20% |          87%   0%   12%         449 | cpu5(P) 76% cpu3(P) 21% cpu8(E) 1% cpu11(E) 1%
+2P             13.56  37.1 |        76%   19%    4% |     22% |          86%   0%   13%         470 | cpu1(P) 48% cpu4(P) 20% cpu6(P) 16% cpu5(P) 8%
+1P             10.39  36.4 |        97%    0%    3% |     19% |          68%   0%   32%        1117 | cpu5(P) 29% cpu4(P) 22% cpu6(P) 20% cpu2(P) 15%
+xor            14.25  38.7 |        39%   52%    8% |     16% |          88%   0%   12%         421 | cpu5(P) 64% cpu3(P) 34% cpu1(P) 2%
+knice0         14.33  39.2 |        54%   40%    6% |     20% |          87%   0%   13%         452 | cpu1(P) 38% cpu3(P) 32% cpu5(P) 28% cpu6(P) 1%
+kE-nice0       12.34  41.4 |        44%   51%    6% |     16% |          89%   0%   10%         357 | cpu8(E) 100%
+kE-nice0-xor   12.54  38.6 |        34%   58%    8% |     14% |          90%   0%   10%         345 | cpu8(E) 100%
+
+per-run logs: /home/shikhar-shashank/Locked_Kernel/File_Extractor/files/profile_runs/   summary: /home/shikhar-shashank/Locked_Kernel/File_Extractor/files/profile_bench.log

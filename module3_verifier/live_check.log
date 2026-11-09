@@ -1,0 +1,238 @@
+topology: hybrid, sysfs-pmu, 12 CPUs
+  P: 8 logical / 4 cores | L1D 48 K, L2 1280 K (shared by 2), L3 12288 K | cpus 0 1 2 3 4 5 6 7
+  E: 4 logical / 4 cores | L1D 32 K, L2 2048 K (shared by 4), L3 12288 K | cpus 8 9 10 11
+workers: P0 P2 P4 P6 E8 E9 E10 E11 | reader cpu 7
+power: battery
+tag: AES-256-GCM-SIV [vpclmul], random per-run key
+baseline: learn 3 complete epochs, confirm after 1 more scan(s), bytes kept for explanations
+enforcer: dry-run (use -e to enforce) | actions lockdown modules_disabled | lockdown now integrity | alerts: console syslog auditd
+[EVENT] LEARNED epoch 3: baseline of 380 segments, 2810 frames, 0 unstable, 40.6 MiB of baseline bytes, 365723 symbols; checking from now on
+=== baseline learned; quiet period
+=== 1a static key: sched_schedstats=1
+[EVENT] CHANGED epoch 17 ktext ktext +0x218000 (patch-like)
+  +0x21a84f print_task.isra.0.cold+0x8c/0x259 (3 B): 0f1f44 -> e91401 nop5->jmp target=print_task.isra.0.cold+0x1a5/0x259
+  +0x21a86d print_task.isra.0.cold+0xaa/0x259 (3 B): 0f1f44 -> e90201 nop5->jmp target=print_task.isra.0.cold+0x1b1/0x259
+  +0x21a881 print_task.isra.0.cold+0xbe/0x259 (3 B): 0f1f44 -> e91901 nop5->jmp target=print_task.isra.0.cold+0x1dc/0x259
+  +0x21a89f print_task.isra.0.cold+0xdc/0x259 (3 B): 0f1f44 -> e90701 nop5->jmp target=print_task.isra.0.cold+0x1e8/0x259
+  +0x21a8b3 print_task.isra.0.cold+0xf0/0x259 (3 B): 0f1f44 -> e91e01 nop5->jmp target=print_task.isra.0.cold+0x213/0x259
+  +0x21a8d1 print_task.isra.0.cold+0x10e/0x259 (3 B): 0f1f44 -> e90c01 nop5->jmp target=print_task.isra.0.cold+0x21f/0x259
+  6 changed range(s), 18 byte(s)
+[EVENT] CHANGED epoch 17 ktext ktext +0x498000 (patch-like)
+  +0x49a0fe cpu_cfs_stat_show+0x5e/0x120 (2 B): 6690 -> eb41 nop2->jmp8 target=cpu_cfs_stat_show+0xa1/0x120
+  1 changed range(s), 2 byte(s)
+[EVENT] CHANGED epoch 17 ktext ktext +0x49c000 (patch-like)
+  +0x49c29d sysctl_schedstats+0x2d/0x170 (3 B): e9ab00 -> 0f1f44 jmp->nop5 target=sysctl_schedstats+0xdd/0x170
+  1 changed range(s), 3 byte(s)
+[EVENT] CHANGED epoch 17 ktext ktext +0x4a0000 (patch-like)
+  +0x4a2797 pick_next_task+0x4e7/0xac0 (3 B): 0f1f44 -> e93f03 nop5->jmp target=pick_next_task+0x82b/0xac0
+  +0x4a28a1 pick_next_task+0x5f1/0xac0 (3 B): 0f1f44 -> e94f02 nop5->jmp target=pick_next_task+0x845/0xac0
+  2 changed range(s), 6 byte(s)
+[EVENT] CHANGED epoch 17 ktext ktext +0x4a4000 (patch-like)
+  +0x4a6a55 force_schedstat_enabled+0x5/0x20 (2 B): 6690 -> eb09 nop2->jmp8 target=force_schedstat_enabled+0x10/0x20
+  +0x4a7805 sched_tick+0x145/0x270 (3 B): 0f1f44 -> e99600 nop5->jmp target=sched_tick+0x1e0/0x270
+  2 changed range(s), 5 byte(s)
+[EVENT] CHANGED epoch 17 ktext ktext +0x4a8000 (patch-like)
+  +0x4a8895 normalize_rt_tasks+0xa5/0x160 (6 B): 669066906690 -> eb55eb46eb21 nop2->jmp8 target=normalize_rt_tasks+0xfc/0x160; nop2->jmp8 target=normalize_rt_tasks+0xef/0x160; nop2->jmp8 target=normalize_rt_tasks+0xcc/0x160
+  +0x4aaf10 try_to_wake_up+0x100/0x8b0 (3 B): 0f1f44 -> e95101 nop5->jmp target=try_to_wake_up+0x256/0x8b0
+  2 changed range(s), 9 byte(s)
+[EVENT] CHANGED epoch 17 ktext ktext +0x4ac000 (patch-like)
+  +0x4acb16 update_se+0x46/0x1e0 (2 B): 6690 -> eb17 nop2->jmp8 target=update_se+0x5f/0x1e0
+  +0x4ad47a detach_task+0x2a/0xc0 (4 B): 66906690 -> eb55eb3a nop2->jmp8 target=detach_task+0x81/0xc0; nop2->jmp8 target=detach_task+0x68/0xc0
+  2 changed range(s), 6 byte(s)
+[EVENT] CHANGED epoch 17 ktext ktext +0x4b0000 (patch-like)
+  +0x4b2bfd set_next_entity+0x5d/0x270 (2 B): 6690 -> eb1f nop2->jmp8 target=set_next_entity+0x7e/0x270
+  +0x4b2c68 set_next_entity+0xc8/0x270 (3 B): 0f1f44 -> e9bd00 nop5->jmp target=set_next_entity+0x18a/0x270
+  2 changed range(s), 5 byte(s)
+[EVENT] CHANGED epoch 17 ktext ktext +0x4b4000 (patch-like)
+  +0x4b5812 wake_affine+0xc2/0x560 (2 B): 6690 -> eb58 nop2->jmp8 target=wake_affine+0x11c/0x560
+  +0x4b5819 wake_affine+0xc9/0x560 (7 B): 0f1f4400006690 -> e985000000eb56 nop5->jmp target=wake_affine+0x153/0x560; nop2->jmp8 target=wake_affine+0x126/0x560
+  2 changed range(s), 9 byte(s)
+[EVENT] CHANGED epoch 17 ktext ktext +0x4b8000 (patch-like)
+  +0x4b8b3d can_migrate_task+0x9d/0x710 (3 B): 0f1f44 -> e9ff00 nop5->jmp target=can_migrate_task+0x1a1/0x710
+  +0x4b8c4e can_migrate_task+0x1ae/0x710 (3 B): 0f1f44 -> e91402 nop5->jmp target=can_migrate_task+0x3c7/0x710
+  +0x4b8e60 can_migrate_task+0x3c0/0x710 (2 B): 6690 -> eb24 nop2->jmp8 target=can_migrate_task+0x3e6/0x710
+  +0x4b933e active_load_balance_cpu_stop+0x17e/0x400 (3 B): 0f1f44 -> e98301 nop5->jmp target=active_load_balance_cpu_stop+0x306/0x400
+  +0x4b93a2 active_load_balance_cpu_stop+0x1e2/0x400 (3 B): 0f1f44 -> e96301 nop5->jmp target=active_load_balance_cpu_stop+0x34a/0x400
+  +0x4b94a7 active_load_balance_cpu_stop+0x2e7/0x400 (2 B): 6690 -> eb2a nop2->jmp8 target=active_load_balance_cpu_stop+0x313/0x400
+  +0x4b94b2 active_load_balance_cpu_stop+0x2f2/0x400 (2 B): 6690 -> eb4c nop2->jmp8 target=active_load_balance_cpu_stop+0x340/0x400
+  +0x4b973b detach_tasks+0x16b/0x560 (3 B): 0f1f44 -> e9d701 nop5->jmp target=detach_tasks+0x347/0x560
+  +0x4b9913 detach_tasks+0x343/0x560 (2 B): 6690 -> eb77 nop2->jmp8 target=detach_tasks+0x3bc/0x560
+  +0x4bae9a put_prev_entity+0x7a/0x210 (3 B): 0f1f44 -> e9f100 nop5->jmp target=put_prev_entity+0x170/0x210
+  +0x4bbc01 dequeue_entity+0x81/0x690 (3 B): 0f1f44 -> e98f02 nop5->jmp target=dequeue_entity+0x315/0x690
+  +0x4bbe9c dequeue_entity+0x31c/0x690 (3 B): 0f1f44 -> e9db01 nop5->jmp target=dequeue_entity+0x4fc/0x690
+  12 changed range(s), 32 byte(s)
+[EVENT] CHANGED epoch 17 ktext ktext +0x4bc000 (patch-like)
+  +0x4bdc80 enqueue_entity+0xa0/0x390 (2 B): 6690 -> eb0a nop2->jmp8 target=enqueue_entity+0xac/0x390
+  +0x4bdc8c enqueue_entity+0xac/0x390 (2 B): 6690 -> eb3a nop2->jmp8 target=enqueue_entity+0xe8/0x390
+  +0x4bdccf enqueue_entity+0xef/0x390 (3 B): 0f1f44 -> e99f00 nop5->jmp target=enqueue_entity+0x193/0x390
+  +0x4bdcda enqueue_entity+0xfa/0x390 (3 B): 0f1f44 -> e90901 nop5->jmp target=enqueue_entity+0x208/0x390
+  4 changed range(s), 10 byte(s)
+[EVENT] CHANGED epoch 17 ktext ktext +0x4c0000 (patch-like)
+  +0x4c39b4 sched_balance_rq+0xd4/0xa70 (3 B): 0f1f44 -> e9fb03 nop5->jmp target=sched_balance_rq+0x4d4/0xa70
+  +0x4c3a3a sched_balance_rq+0x15a/0xa70 (3 B): 0f1f44 -> e92803 nop5->jmp target=sched_balance_rq+0x487/0xa70
+  +0x4c3caa sched_balance_rq+0x3ca/0xa70 (3 B): 0f1f44 -> e94301 nop5->jmp target=sched_balance_rq+0x512/0xa70
+  3 changed range(s), 9 byte(s)
+[EVENT] CHANGED epoch 17 ktext ktext +0x4c4000 (patch-like)
+  +0x4c40c0 sched_balance_rq+0x7e0/0xa70 (2 B): 6690 -> eb0d nop2->jmp8 target=sched_balance_rq+0x7ef/0xa70
+  +0x4c40fd sched_balance_rq+0x81d/0xa70 (2 B): 6690 -> eb02 nop2->jmp8 target=sched_balance_rq+0x821/0xa70
+  +0x4c4123 sched_balance_rq+0x843/0xa70 (2 B): 6690 -> eb05 nop2->jmp8 target=sched_balance_rq+0x84a/0xa70
+  3 changed range(s), 6 byte(s)
+[EVENT] CHANGED epoch 17 ktext ktext +0x4c8000 (patch-like)
+  +0x4caed0 check_schedstat_required+0x0/0x50 (2 B): 6690 -> eb40 nop2->jmp8 target=check_schedstat_required+0x42/0x50
+  1 changed range(s), 2 byte(s)
+[EVENT] CHANGED epoch 17 ktext ktext +0x4cc000 (patch-like)
+  +0x4cebb8 dequeue_task_rt+0x68/0x220 (3 B): 0f1f44 -> e99500 nop5->jmp target=dequeue_task_rt+0x102/0x220
+  1 changed range(s), 3 byte(s)
+[EVENT] CHANGED epoch 17 ktext ktext +0x4d0000 (patch-like)
+  +0x4d07ac enqueue_task_rt+0x5c/0x3e0 (3 B): 0f1f44 -> e9d901 nop5->jmp target=enqueue_task_rt+0x23a/0x3e0
+  +0x4d07e2 enqueue_task_rt+0x92/0x3e0 (3 B): 0f1f44 -> e98c01 nop5->jmp target=enqueue_task_rt+0x223/0x3e0
+  +0x4d0980 enqueue_task_rt+0x230/0x3e0 (3 B): 0f1f44 -> e9a500 nop5->jmp target=enqueue_task_rt+0x2da/0x3e0
+  +0x4d1b40 do_sched_yield+0x30/0xa0 (2 B): 6690 -> eb4e nop2->jmp8 target=do_sched_yield+0x80/0xa0
+  4 changed range(s), 11 byte(s)
+[EVENT] CHANGED epoch 17 ktext ktext +0x4d8000 (patch-like)
+  +0x4d9c08 enqueue_dl_entity+0x38/0xaa0 (3 B): 0f1f44 -> e96d02 nop5->jmp target=enqueue_dl_entity+0x2aa/0xaa0
+  +0x4d9e87 enqueue_dl_entity+0x2b7/0xaa0 (3 B): 0f1f44 -> e9c202 nop5->jmp target=enqueue_dl_entity+0x57e/0xaa0
+  +0x4da6d9 enqueue_task_dl+0x59/0x200 (3 B): 0f1f44 -> e9a400 nop5->jmp target=enqueue_task_dl+0x102/0x200
+  3 changed range(s), 9 byte(s)
+[EVENT] CHANGED epoch 17 ktext ktext +0x4dc000 (patch-like)
+  +0x4dcee8 set_next_task_rt+0xf8/0x150 (2 B): 6690 -> eb05 nop2->jmp8 target=set_next_task_rt+0xff/0x150
+  +0x4dcfe5 put_prev_task_rt+0x95/0xd0 (2 B): 6690 -> eb17 nop2->jmp8 target=put_prev_task_rt+0xae/0xd0
+  +0x4dda0e set_next_task_dl+0x14e/0x1b0 (2 B): 6690 -> eb05 nop2->jmp8 target=set_next_task_dl+0x155/0x1b0
+  +0x4df474 update_curr_dl_se+0x1c4/0x330 (2 B): 6690 -> eb00 nop2->jmp8 target=update_curr_dl_se+0x1c6/0x330
+  4 changed range(s), 8 byte(s)
+[EVENT] CHANGED epoch 17 ktext ktext +0x4e0000 (patch-like)
+  +0x4e0981 put_prev_task_dl+0xb1/0x130 (2 B): 6690 -> eb43 nop2->jmp8 target=put_prev_task_dl+0xf6/0x130
+  1 changed range(s), 2 byte(s)
+[EVENT] CHANGED epoch 17 ktext ktext +0x4e4000 (patch-like)
+  +0x4e7fac set_next_task_idle+0x1c/0x140 (3 B): 0f1f44 -> e9bb00 nop5->jmp target=set_next_task_idle+0xdc/0x140
+  1 changed range(s), 3 byte(s)
+[EVENT] CHANGED epoch 17 ktext ktext +0x4f0000 (patch-like)
+  +0x4f1f6e print_cfs_group_stats.isra.0+0x13e/0x680 (3 B): 0f1f44 -> e99500 nop5->jmp target=print_cfs_group_stats.isra.0+0x1d8/0x680
+  +0x4f349e print_task.isra.0+0x26e/0x7b0 (3 B): 0f1f44 -> e92001 nop5->jmp target=print_task.isra.0+0x393/0x7b0
+  +0x4f34a6 print_task.isra.0+0x276/0x7b0 (3 B): 0f1f44 -> e9e001 nop5->jmp target=print_task.isra.0+0x45b/0x7b0
+  +0x4f34ad print_task.isra.0+0x27d/0x7b0 (3 B): 0f1f44 -> e9a501 nop5->jmp target=print_task.isra.0+0x427/0x7b0
+  +0x4f34b5 print_task.isra.0+0x285/0x7b0 (3 B): 0f1f44 -> e97401 nop5->jmp target=print_task.isra.0+0x3fe/0x7b0
+  +0x4f34bd print_task.isra.0+0x28d/0x7b0 (3 B): 0f1f44 -> e93501 nop5->jmp target=print_task.isra.0+0x3c7/0x7b0
+  +0x4f34c4 print_task.isra.0+0x294/0x7b0 (3 B): 0f1f44 -> e93b02 nop5->jmp target=print_task.isra.0+0x4d4/0x7b0
+  +0x4f3c35 print_cpu+0x245/0x4b0 (3 B): 0f1f44 -> e93601 nop5->jmp target=print_cpu+0x380/0x4b0
+  8 changed range(s), 24 byte(s)
+[EVENT] CHANGED epoch 17 ktext ktext +0x4f8000 (patch-like)
+  +0x4fb111 proc_sched_show_task+0x1b1/0xf20 (3 B): 0f1f44 -> e90003 nop5->jmp target=proc_sched_show_task+0x4b6/0xf20
+  1 changed range(s), 3 byte(s)
+[EVENT] CHANGED epoch 17 ktext ktext +0x1740000 (patch-like)
+  +0x17419bd __schedule+0xad/0x640 (3 B): 0f1f44 -> e95e02 nop5->jmp target=__schedule+0x310/0x640
+  +0x174262f yield_to+0x2bf/0x380 (2 B): 6690 -> eb53 nop2->jmp8 target=yield_to+0x314/0x380
+  2 changed range(s), 5 byte(s)
+=== 1b static key: sched_schedstats=0 (restored)
+[EVENT] REVERTED epoch 28 ktext ktext +0x218000: confirmed change is back to the baseline content
+[EVENT] REVERTED epoch 28 ktext ktext +0x498000: confirmed change is back to the baseline content
+[EVENT] REVERTED epoch 28 ktext ktext +0x49c000: confirmed change is back to the baseline content
+[EVENT] REVERTED epoch 28 ktext ktext +0x4a0000: confirmed change is back to the baseline content
+[EVENT] REVERTED epoch 28 ktext ktext +0x4a4000: confirmed change is back to the baseline content
+[EVENT] REVERTED epoch 28 ktext ktext +0x4a8000: confirmed change is back to the baseline content
+[EVENT] REVERTED epoch 28 ktext ktext +0x4ac000: confirmed change is back to the baseline content
+[EVENT] REVERTED epoch 28 ktext ktext +0x4b0000: confirmed change is back to the baseline content
+[EVENT] REVERTED epoch 28 ktext ktext +0x4b4000: confirmed change is back to the baseline content
+[EVENT] REVERTED epoch 28 ktext ktext +0x4b8000: confirmed change is back to the baseline content
+[EVENT] REVERTED epoch 28 ktext ktext +0x4bc000: confirmed change is back to the baseline content
+[EVENT] REVERTED epoch 28 ktext ktext +0x4c0000: confirmed change is back to the baseline content
+[EVENT] REVERTED epoch 28 ktext ktext +0x4c4000: confirmed change is back to the baseline content
+[EVENT] REVERTED epoch 28 ktext ktext +0x4c8000: confirmed change is back to the baseline content
+[EVENT] REVERTED epoch 28 ktext ktext +0x4cc000: confirmed change is back to the baseline content
+[EVENT] REVERTED epoch 28 ktext ktext +0x4d0000: confirmed change is back to the baseline content
+[EVENT] REVERTED epoch 28 ktext ktext +0x4d8000: confirmed change is back to the baseline content
+[EVENT] REVERTED epoch 28 ktext ktext +0x4dc000: confirmed change is back to the baseline content
+[EVENT] REVERTED epoch 28 ktext ktext +0x4e0000: confirmed change is back to the baseline content
+[EVENT] REVERTED epoch 28 ktext ktext +0x4e4000: confirmed change is back to the baseline content
+[EVENT] REVERTED epoch 28 ktext ktext +0x4f0000: confirmed change is back to the baseline content
+[EVENT] REVERTED epoch 28 ktext ktext +0x4f8000: confirmed change is back to the baseline content
+[EVENT] REVERTED epoch 28 ktext ktext +0x1740000: confirmed change is back to the baseline content
+=== 2a modprobe dummy
+[EVENT] NEW_SEGMENT epoch 39 mod_text dummy +0x0: segment appeared after learning (trusted on first use)
+[EVENT] NEW_SEGMENT epoch 39 mod_rodata dummy +0x0: segment appeared after learning (trusted on first use)
+=== 2b modprobe -r dummy
+[EVENT] VANISHED epoch 51 mod_text dummy +0x0: segment no longer scanned (module unloaded?)
+[EVENT] VANISHED epoch 51 mod_rodata dummy +0x0: segment no longer scanned (module unloaded?)
+=== 3a ftrace: function tracer on vfs_read
+[EVENT] CHANGED epoch 68 ktext ktext +0x3fc000 (patch-like)
+  +0x3fdfc7 ftrace_call+0x1/0x44 (3 B): 251221 -> 05e420 call retarget target=ftrace_ops_list_func+0x0/0x200 was=call_direct_funcs+0x0/0x30
+  +0x3fe111 ftrace_regs_call+0x1/0x52 (3 B): db1021 -> bbe220 call retarget target=ftrace_ops_list_func+0x0/0x200 was=call_direct_funcs+0x0/0x30
+  2 changed range(s), 6 byte(s)
+[EVENT] CHANGED epoch 68 ktext ktext +0x4a4000 (patch-like)
+  +0x4a44a1 ttwu_do_activate+0x91/0x1e0 (2 B): 6690 -> eb63 nop2->jmp8 target=ttwu_do_activate+0xf6/0x1e0
+  +0x4a4538 ttwu_do_activate+0x128/0x1e0 (3 B): e7feff -> 771900 call retarget target=probe_sched_wakeup+0x0/0x60 was=__traceiter_sched_wakeup+0x0/0x50
+  2 changed range(s), 5 byte(s)
+[EVENT] CHANGED epoch 68 ktext ktext +0x4a8000 (patch-like)
+  +0x4ab0cf try_to_wake_up+0x2bf/0x8b0 (3 B): 0f1f44 -> e9b600 nop5->jmp target=try_to_wake_up+0x37a/0x8b0
+  +0x4ab1c0 try_to_wake_up+0x3b0/0x8b0 (3 B): 7bfeff -> 0b1900 call retarget target=probe_sched_wakeup+0x0/0x60 was=__traceiter_sched_wakeup+0x0/0x50
+  +0x4ab4d8 try_to_wake_up+0x6c8/0x8b0 (2 B): 6690 -> eb05 nop2->jmp8 target=try_to_wake_up+0x6cf/0x8b0
+  +0x4ab528 try_to_wake_up+0x718/0x8b0 (3 B): 77feff -> 071900 call retarget target=probe_sched_wakeup+0x0/0x60 was=__traceiter_sched_wakeup+0x0/0x50
+  +0x4abbe4 wake_up_new_task+0x184/0x330 (3 B): 0f1f44 -> e9d200 nop5->jmp target=wake_up_new_task+0x25b/0x330
+  +0x4abcef wake_up_new_task+0x28f/0x330 (4 B): 6d70feff -> 0d001900 call retarget target=probe_sched_wakeup+0x0/0x60 was=__traceiter_sched_wakeup_new+0x0/0x50
+  6 changed range(s), 18 byte(s)
+[EVENT] CHANGED epoch 68 ktext ktext +0x8ec000 (patch-like)
+  +0x8ec6e0 vfs_read+0x0/0x3a0 (5 B): 0f1f440000 -> e81b19952f nop5->call target=ftrace_trampoline+0x0/0x1000 [__builtin__ftrace]
+  1 changed range(s), 5 byte(s)
+[EVENT] CHANGED epoch 68 ktext ktext +0x1740000 (patch-like)
+  +0x1741acd __schedule+0x1bd/0x640 (3 B): 0f1f44 -> e96002 nop5->jmp target=__schedule+0x422/0x640
+  +0x1741d70 __schedule+0x460/0x640 (3 B): 4c10d5 -> 1c9fef call retarget target=probe_sched_switch+0x0/0x60 was=__traceiter_sched_switch+0x0/0x70
+  2 changed range(s), 6 byte(s)
+[EVENT] CHANGED epoch 68 ktext ktext +0x174c000 (patch-like)
+  +0x174f432 __SCT__tp_func_sched_wakeup+0x2/0x8 (2 B): 38d4 -> c8ee jmp retarget target=probe_sched_wakeup+0x0/0x60 was=__traceiter_sched_wakeup+0x0/0x50
+  +0x174f439 __SCT__tp_func_sched_wakeup_new+0x1/0x8 (3 B): 2339d4 -> c3c8ee jmp retarget target=probe_sched_wakeup+0x0/0x60 was=__traceiter_sched_wakeup_new+0x0/0x50
+  +0x174f441 __SCT__tp_func_sched_switch+0x1/0x8 (3 B): 7b39d4 -> 4bc8ee jmp retarget target=probe_sched_switch+0x0/0x60 was=__traceiter_sched_switch+0x0/0x70
+  3 changed range(s), 8 byte(s)
+=== 3b ftrace: tracer off
+[EVENT] REVERTED epoch 77 ktext ktext +0x3fc000: confirmed change is back to the baseline content
+[EVENT] REVERTED epoch 77 ktext ktext +0x4a4000: confirmed change is back to the baseline content
+[EVENT] REVERTED epoch 77 ktext ktext +0x4a8000: confirmed change is back to the baseline content
+[EVENT] REVERTED epoch 77 ktext ktext +0x8ec000: confirmed change is back to the baseline content
+[EVENT] REVERTED epoch 77 ktext ktext +0x1740000: confirmed change is back to the baseline content
+[EVENT] REVERTED epoch 77 ktext ktext +0x174c000: confirmed change is back to the baseline content
+[EVENT] CHANGED epoch 84 ktext ktext +0x1414000 (patch-like)
+  +0x14175a4 dev_queue_xmit_nit+0xd4/0x220 (3 B): 0f1f44 -> e99c00 nop5->jmp target=dev_queue_xmit_nit+0x175/0x220
+  1 changed range(s), 3 byte(s)
+[EVENT] CHANGED epoch 84 ktext ktext +0x141c000 (patch-like)
+  +0x141f34d netif_rx_internal+0x1d/0x130 (2 B): 6690 -> eb40 nop2->jmp8 target=netif_rx_internal+0x5f/0x130
+  1 changed range(s), 2 byte(s)
+[EVENT] CHANGED epoch 84 ktext ktext +0x1424000 (patch-like)
+  +0x142485f __netif_receive_skb_core.constprop.0+0x3f/0xf90 (3 B): 0f1f44 -> e99d03 nop5->jmp target=__netif_receive_skb_core.constprop.0+0x3e1/0xf90
+  +0x1425c41 netif_receive_skb+0x21/0x1a0 (3 B): 0f1f44 -> e9ea00 nop5->jmp target=netif_receive_skb+0x110/0x1a0
+  +0x1425f96 netif_receive_skb_list_internal+0x56/0x310 (3 B): 0f1f44 -> e9c301 nop5->jmp target=netif_receive_skb_list_internal+0x21e/0x310
+  3 changed range(s), 9 byte(s)
+[EVENT] CHANGED epoch 84 ktext ktext +0x1508000 (patch-like)
+  +0x15089d5 ip_local_deliver_finish+0xa5/0x110 (2 B): 6690 -> eb0a nop2->jmp8 target=ip_local_deliver_finish+0xb1/0x110
+  1 changed range(s), 2 byte(s)
+[EVENT] CHANGED epoch 84 ktext ktext +0x15f0000 (patch-like)
+  +0x15f04b7 ip6_input_finish+0x47/0x110 (2 B): 6690 -> eb2d nop2->jmp8 target=ip6_input_finish+0x76/0x110
+  1 changed range(s), 2 byte(s)
+[EVENT] CHANGED epoch 84 ktext ktext +0x1644000 (patch-like)
+  +0x1644f87 __ioam6_fill_trace_data+0x117/0x620 (2 B): 6690 -> eb00 nop2->jmp8 target=__ioam6_fill_trace_data+0x119/0x620
+  +0x16452d3 __ioam6_fill_trace_data+0x463/0x620 (2 B): 6690 -> eb00 nop2->jmp8 target=__ioam6_fill_trace_data+0x465/0x620
+  2 changed range(s), 4 byte(s)
+[EVENT] CHANGED epoch 84 ktext ktext +0x1668000 (patch-like)
+  +0x166a316 packet_rcv+0x2d6/0x4b0 (3 B): 0f1f44 -> e90f01 nop5->jmp target=packet_rcv+0x3ea/0x4b0
+  +0x166bfeb tpacket_rcv+0x46b/0xd80 (3 B): 0f1f44 -> e9d606 nop5->jmp target=tpacket_rcv+0xb46/0xd80
+  2 changed range(s), 6 byte(s)
+[EVENT] REVERTED epoch 85 ktext ktext +0x1414000: confirmed change is back to the baseline content
+[EVENT] REVERTED epoch 85 ktext ktext +0x141c000: confirmed change is back to the baseline content
+[EVENT] REVERTED epoch 85 ktext ktext +0x1424000: confirmed change is back to the baseline content
+[EVENT] REVERTED epoch 85 ktext ktext +0x1508000: confirmed change is back to the baseline content
+[EVENT] REVERTED epoch 85 ktext ktext +0x15f0000: confirmed change is back to the baseline content
+[EVENT] REVERTED epoch 85 ktext ktext +0x1644000: confirmed change is back to the baseline content
+[EVENT] REVERTED epoch 85 ktext ktext +0x1668000: confirmed change is back to the baseline content
+=== done
+total: 87 complete epochs, 3530.8 MiB, 244494 frames, 45293 chunks | P 100.0% | pin failures 0
+result: power=battery alpha=1.00 beta_p_kib=256 beta_e_kib=16 workers_p=4 workers_e=4 tag=siv epochs=87 bytes=3702276816 seconds=23.022 gbps=0.1608 joules=137.86 watts=5.99 gbpj=0.02686
+  worker  0 P cpu  0:    882.8 MiB
+  worker  1 P cpu  2:    883.3 MiB
+  worker  2 P cpu  4:    882.4 MiB
+  worker  3 P cpu  6:    882.3 MiB
+  worker  4 E cpu  8:      0.0 MiB
+  worker  5 E cpu  9:      0.0 MiB
+  worker  6 E cpu 10:      0.0 MiB
+  worker  7 E cpu 11:      0.0 MiB
+kernel (this run): ring_full 1689 | fault_pages 0 | bad_tail 0 | segments 380 | direct 129041 | remap 0 (text window on) | pte rechecks 0, overruled 0
+baseline: checking | 3 learned + 84 checked epochs | 380 segments, 2810 frames, 0 in CHANGED | events: changed 36, transient 0, reverted 36, new 2, vanished 2, wx 0, fault 0, remap 0, unstable 0 | 365723 symbols
+[KE warn  ] kim_summary period_s=23 events=77 info=37 notice=36 warn=4 crit=0 emerg=0 suppressed=50 changed=36 reverted=36 transient=0 new=2 vanished=2
+enforcer: events info 37 notice 36 warn 4 crit 0 emerg 0 | suppressed 50 | actions done 0, would 0, failed 0, not-enabled 0
