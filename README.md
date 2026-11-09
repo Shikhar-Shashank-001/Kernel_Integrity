@@ -1,4 +1,4 @@
-# kim — hardware-accelerated kernel integrity monitor
+# hardware-accelerated kernel integrity monitor
 
 kim continuously verifies the running Linux kernel. It checks kernel text, the syscall tables and the text and read-only data of every loaded module. Each 16 KiB frame gets an AES-256-GCM-SIV tag, computed with VAES/VPCLMULQDQ on the P-cores of a hybrid Intel CPU. Tags are compared with a baseline learned at start-up.
 
